@@ -22,7 +22,8 @@ angular.module('angucomplete', [] )
             "localData": "=localdata",
             "searchFields": "@searchfields",
             "minLengthUser": "@minlength",
-            "matchClass": "@matchclass"
+            "matchClass": "@matchclass",
+            "openOnFocus": "@openonfocus"
         },
         template: '<div class="angucomplete-holder"><input id="{{id}}_value" ng-model="searchStr" type="text" placeholder="{{placeholder}}" class="{{inputClass}}"/><div id="{{id}}_dropdown" class="angucomplete-dropdown" ng-if="showDropdown"><div class="angucomplete-searching" ng-show="searching">Searching...</div><div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)">No results found</div><div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseover="hoverRow()" ng-class="{\'angucomplete-selected-row\': $index == currentIndex}"><div ng-if="imageField" class="angucomplete-image-holder"><img ng-if="result.image && result.image != \'\'" ng-src="{{result.image}}" class="angucomplete-image"/><div ng-if="!result.image && result.image != \'\'" class="angucomplete-image-default"></div></div><div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div><div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div><div ng-if="result.description && result.description != \'\'" class="angucomplete-description">{{result.description}}</div></div></div></div>',
 
@@ -191,6 +192,14 @@ angular.module('angucomplete', [] )
             var inputField = elem.find('input');
 
             inputField.on('keyup', $scope.keyPressed);
+
+            inputField.bind('focus', function () {
+                if ($scope.openOnFocus) {
+                    $scope.showDropdown = true;
+                    $scope.processResults($scope.localData);
+                    $scope.$apply();
+                }
+            });
 
             inputField.bind('blur', function () {
                 setTimeout(function () {
