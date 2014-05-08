@@ -35,7 +35,7 @@ angular.module('angucomplete', [] )
             $scope.searching = false;
             $scope.pause = 500;
             $scope.minLength = 3;
-            $scope.searchStr = null;
+            $scope.searchStr = ($scope.selectedObject) ? $scope.selectedObject[$scope.searchFields] : null;
 
             if ($scope.minLengthUser && $scope.minLengthUser != "") {
                 $scope.minLength = $scope.minLengthUser;
