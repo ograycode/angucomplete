@@ -181,6 +181,13 @@ angular.module('angucomplete', [] )
 
             inputField.on('keyup', $scope.keyPressed);
 
+            inputField.bind('blur', function () {
+                setTimeout(function () {
+                    $scope.showDropdown = false;
+                    $scope.$apply();
+                }, 200); //allow the user to select
+            });
+
             elem.on("keyup", function (event) {
                 if(event.which === 40) {
                     if (($scope.currentIndex + 1) < $scope.results.length) {
