@@ -48,6 +48,17 @@ angular.module('angucomplete', [] )
                 return newTerm.length >= $scope.minLength && newTerm != oldTerm
             }
 
+            var acceptSearchIfNeeded = function() {
+                var selection = $scope.selectedObject;
+                if(!selection || (selection && selection.isSearchResult)) {
+                    $scope.selectedObject = {
+                        searchResult: $scope.searchStr,
+                        isSearchResult: true,
+                        originalObject: null
+                    };
+                }
+            };
+
             $scope.processResults = function(responseData, str) {
                 if (responseData && responseData.length > 0) {
                     $scope.results = [];
@@ -133,7 +144,7 @@ angular.module('angucomplete', [] )
                             });
                     }
                 }
-
+                acceptSearchIfNeeded();
             }
 
             $scope.hoverRow = function(index) {
@@ -225,6 +236,7 @@ angular.module('angucomplete', [] )
                     $scope.$apply();
                 } else if (event.which == 8) {
                     $scope.selectedObject = null;
+                    acceptSearchIfNeeded();
                     $scope.$apply();
                 }
             });
